@@ -1,0 +1,8 @@
+CREATIONAL
+Constructor, Singleton, Abstract, Prototype, Builder.
+
+STRUCTURAL
+Decorator, Facade, Adapter, Proxy.
+
+BEHAVIORAL
+Iterator, Mediator, Observer, Visitor

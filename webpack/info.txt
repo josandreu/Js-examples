@@ -1,0 +1,101 @@
+Se trata de realizar una configuración para trabajar con nuestros proyectos de JavaScript con Webpack. Y una programación ORIENTADA A COMPONENTES.
+
+Por defecto, Webpack se instala de modo global.
+
+Además, cuando iniciamos un proyecto con npm init, una vez configurado el proyecto lo instalamos como dependencia de desarrollo.
+
+Por defecto, Webpack busca una carpeta src con un archivo index.js y al ejecutar 'webpack' crea una carpeta dist con un archivo main.js
+
+Se puede configurar para desarrollo o para producción, la diferencia es que en producción minifica los archivos
+
+*****
+ME DABA ERROR CON LA VERSIÓN 2.1 DE CSS-LOADER Y CON MINI-CSS-EXTRACT-PLUGIN 1.0, tuve que instalar versiones anteriores (ver package.json)
+El error era: options should NOT have additional properties, parece ser que está relacionado con las opciones de minimize&sourceMap
+*****
+
+*** WEBPACK
+
+Conceptos esenciales
+1-Puntos de entrada (Entry)
+2-Puntos de salida (Output)
+3-Cargadores (Loaders)
+4-Plugins
+5-Modo (Mode)
+
+*** TRANSPILAR con BABEL
+
+1-Instalamos como dependencia de desarrollo: 
+npm i -D babel-loader babel-core babel-preset-env
+IMPORTANTE: babel-core, instala la versión 6. Y existe la versión 7, que es @babel-core
+babel-loader tiene que ser compatible con esta versión (por defecto se instala la 8, que la compatible con @babel-core), por tanto desinstalamos
+npm un -D babel-loader babel-core babel-preset-env
+Instalamos los paquetes en la versión que queremos
+npm i -D babel-core@6.26.3
+npm i -D babel-loader@7.1.5
+npm i -D babel-preset-env@1.7.0
+
+2-Crear archivo .babelrc
+{
+  "presets": ["env"]
+}
+
+3-Configurar scripts-tareas en package.json
+"dev-babel": "webpack --mode development --module-bind js=babel-loader",
+"build-babel": "webpack --mode production --module-bind js=babel-loader"
+
+
+*** Creamos ARCHIVO de CONFIGURACIÓN de WEBPACK ***
+
+*** HTML WEBPACK PLUGIN (html-webpack-plugin)
+Inyectar con Webpack los correspondientes scripts, y otros elementos, en un archivo HTML generado, para instalar el contenido de tus bundles en el proyecto, para poder inyectar en HTML scripts de JavaScript
+npm i -D html-webpack-plugin html-loader
+Añadimos al archivo de configuración de Webpack los parametros necesarios del plugin
+Creamos un archivo template.html en la carpeta src
+Si ejecutamos 'npm run build' creará un archivo index.html en la carpeta dist, con todos los archivos js cargados
+
+*** Servidor en Webpack (que funciona en tiempo real ante cualquier cambio, además no necesita que exista la carpeta de producción)
+npm i -D webpack-dev-server
+Ejecutar el servidor:
+    1-Creamos en el package.json un script
+    "start": "webpack-dev-server --mode development --open"
+    2-En la consola: npm start (con start no hace falta run)
+    3-Detener el servidor: ^C
+
+
+*** Soporte para CSS Y SCSS
+1-Le damos soporte
+    test: /\.(css|scss)$/
+2-style-loader
+    Le permitirá crear cadenas de texto css a node, quien compila es node.js, este loader le permite escribir cadenas js a node de código css
+3-MiniCssExtractPlugin
+    .loader ejecuta esta propiedad
+    Para extraer las hojas de estilo del proyecto de los archivos js a un archivo css independiente, esto es una librería adicional, por lo que tenemos que hacer un require de la misma en la parte superior del archivo.
+4-css-loader
+    Pasamos opciones minimize & sourceMap(para poder detectar errores, saber en qué linea están)
+    Para dar soporte a poder invocar-transformar el codigo css a un formato js, para poder importar una hoja de estilos como si fuera un modulo js.
+5-post-css
+    Transforma codigo css mediante js
+    Él solo no hace nada, hay que pasarle los plugins con los que queremos trabajar. En este caso, autoprefixer, que le decimos que soporte las dos ultimas versiones del navegador (esto es una librería adicional, por lo que tenemos que hacer un require de la misma en la parte superior del archivo).
+    Activamos también los sourceMap.
+    Tiene un método, llamado plugins que define los plugins que va a utilizar. Como es uno solo podemos hacerlo con una arrow function
+6-sass-loader
+    Para no abrir un objeto, le pasamos las opciones como si fuera una url (método get). Le indicamos el método de salida, que será compressed y que active los sourceMap.
+7-sourceMap de manera global
+    Hay que añadir la propiedad devtool del objeto de webpack en la parte superior, la primera propiedad. Para indicar que utilizaremos sourceMap.
+8-CUANDO UTILIZAMOS UN PLUGIN (como autoprefixer, HtmlWebpackPlugin o MiniCssExtractPlugin), ES NECESARIO además del require en la parte superior del archivo webpack.config.js, crear las instancias dentro del array plugins (que es una propiedad del objeto webpack) haciendo un new de la constante que hemos creado a partir de los require
+9-Creamos una carpera scss con un archivo main.scss dentro de src
+10-Creamos un style.css dentro de src
+11-importamos el archivo style.css y el archivo main.scss desde el archivo index.js
+12-npm start y veremos la página en el navegador
+
+
+*** PARA PODER CARGAR IMÁGENES
+resolve-url-loader
+Hay que configurarlo en webpack.config.json ANTES del cargador de sass, para poder cargar desde allí las imágenes
+Después necesitamos que webpack pueda interpretar archivos .svg, .png, etc. Para eso ---> file-loader
+En webpack.config.json debemos 1º de configurar como se han de cargar las imagenes y después los demás tipos de archivo
+Si queremos cargar una imagen directamente desde template.html, tenemos que hacer un import desde index.js de las imagenes y luego vamos creando los elementos desde el propio index.js
+
+Para optimizarlas ------> npm run build
+Genera una carpeta dist, con el contenido para producción
+*** CleanWebpackPlugin ----> sirve para que si volvemos a hacer un build, limpie todo y se genere de nuevo dist, pero sin lo anterior.

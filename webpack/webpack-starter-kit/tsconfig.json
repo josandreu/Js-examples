@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/", // directorio de salida
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "es6", // poder utilizar imports
+    "target": "es5", // tiene que compilar a ecmascript5
+    "jsx": "react",
+    "allowJs": true // se permite codigo js
+  },
+  "include": ["./src/**/*"] // ruta desde donde ha de leer los archivos, cualquier subnivel de la carpeta src
+}

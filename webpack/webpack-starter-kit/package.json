@@ -1,0 +1,49 @@
+{
+  "name": "webpack-starter-kit",
+  "version": "1.0.0",
+  "description": "Kit de inicio para trabajar con Webpack, Vanilla JS, React, Vue.js, TypeScript y Sass",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "dev-2": "webpack --mode development ./prueba/dev/main.js --output ./prueba/public/script.js",
+    "build-2": "webpack --mode production ./prueba/dev/main.js --output ./prueba/public/script.js",
+    "dev-babel": "webpack --mode development --module-bind js=babel-loader",
+    "build-babel": "webpack --mode production --module-bind js=babel-loader"
+  },
+  "author": "Jose Andreu",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.6.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^1.0.0",
+    "file-loader": "^4.0.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "image-webpack-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^0.4.1",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
+    "resolve-url-loader": "^3.1.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^6.0.2",
+    "typescript": "^3.5.1",
+    "vue-loader": "^15.7.0",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.3",
+    "webpack-dev-server": "^3.7.1"
+  }
+}
